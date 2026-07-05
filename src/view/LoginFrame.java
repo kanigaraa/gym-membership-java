@@ -1,15 +1,22 @@
 package view;
 
+import controller.AuthController;
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginFrame extends JFrame {
+    private final AuthController authController;
     private final JTextField tfUsername = new JTextField(16);
     private final JPasswordField pfPassword = new JPasswordField(16);
     private final JButton btnLogin = new JButton("Login");
 
     public LoginFrame() {
-        setTitle("Login");
+        this(new AuthController());
+    }
+
+    LoginFrame(AuthController authController) {
+        this.authController = authController;
+        setTitle("Gym Membership Management");
         setContentPane(createContentPanel(tfUsername, pfPassword, btnLogin));
         setSize(420, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +72,9 @@ public class LoginFrame extends JFrame {
         String username = tfUsername.getText();
         String password = new String(pfPassword.getPassword());
 
-        if (username.equals("admin") && password.equals("admin123")) {
+        if (username.isBlank() || password.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Username dan password wajib diisi!");
+        } else if (authenticate(authController, username.trim(), password)) {
             JOptionPane.showMessageDialog(this, "Login berhasil!");
             new DashboardFrame().setVisible(true);
             dispose();
@@ -75,4 +84,9 @@ public class LoginFrame extends JFrame {
             tfUsername.requestFocus();
         }
     }
+
+    static boolean authenticate(AuthController authController, String username, String password) {
+        return authController.login(username, password);
+    }
 }
+
