@@ -10,7 +10,7 @@ public class Member {
     private final String phone;
     private final String membershipType;
     private final LocalDate registrationDate;
-    private final LocalDate expiryDate;
+    private LocalDate expiryDate;
 
     public Member(Integer id, String name, String phone, String membershipType,
                   LocalDate registrationDate, LocalDate expiryDate) {
@@ -48,6 +48,19 @@ public class Member {
 
     public LocalDate getExpiryDate() {
         return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = Objects.requireNonNull(expiryDate, "expiryDate");
+    }
+
+    public void extendMembership(int months) {
+        LocalDate today = LocalDate.now(Clock.systemDefaultZone());
+        if (expiryDate.isBefore(today)) {
+            expiryDate = today.plusMonths(months);
+        } else {
+            expiryDate = expiryDate.plusMonths(months);
+        }
     }
 
     public String getStatus() {

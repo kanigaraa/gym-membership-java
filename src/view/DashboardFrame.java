@@ -20,8 +20,10 @@ public class DashboardFrame extends JFrame {
             new MemberFrame().setVisible(true);
             dispose();
         });
-        membershipButton.addActionListener(event -> JOptionPane.showMessageDialog(
-                this, "Halaman Membership akan dibuat oleh Luthfi."));
+        membershipButton.addActionListener(event -> {
+            new MembershipFrame().setVisible(true);
+            dispose();
+        });
         logoutButton.addActionListener(event -> logout());
     }
 
