@@ -23,6 +23,10 @@ public class DashboardFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
+        lblTitle.setText("GYM MEMBERSHIP MANAGEMENT");
+        lblSubtitle.setText("Dashboard");
+        lblWelcome.setText("Welcome, Admin!");
+
         btnMember.addActionListener(e ->
                 JOptionPane.showMessageDialog(this,
                         "Halaman Data Member akan dibuat oleh Khaliz.")

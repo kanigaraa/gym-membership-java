@@ -22,10 +22,14 @@ public class LoginFrame extends JFrame {
 
         setTitle("Gym Membership Management");
         setContentPane(mainPanel);
-        setSize(300, 240);
+        setSize(340, 260);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        lblTitle.setText("Gym Membership System");
+        lblSubtitle.setText("Login Admin");
+        btnLogin.setText("Login");
 
         btnLogin.addActionListener(e -> login());
     }
