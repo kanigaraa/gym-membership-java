@@ -18,53 +18,72 @@ public class LoginFrame extends JFrame {
         this.authController = authController;
         setTitle("Gym Membership Management");
         setContentPane(createContentPanel(tfUsername, pfPassword, btnLogin));
-        setSize(420, 300);
+        setSize(460, 340);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
         getRootPane().setDefaultButton(btnLogin);
 
         btnLogin.addActionListener(e -> login());
     }
 
     static JPanel createContentPanel(JTextField username, JPasswordField password, JButton loginButton) {
-        JPanel content = new JPanel(new GridBagLayout());
+        JPanel content = new JPanel(new BorderLayout(16, 16));
         content.setBorder(BorderFactory.createEmptyBorder(24, 32, 24, 32));
+        content.setBackground(Color.WHITE);
+
+        JPanel heading = new JPanel();
+        heading.setLayout(new BoxLayout(heading, BoxLayout.Y_AXIS));
+        heading.setBackground(Color.WHITE);
+
+        JLabel title = new JLabel("Gym Membership System");
+        title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel subtitle = new JLabel("Login Admin");
+        subtitle.setForeground(new Color(90, 90, 90));
+        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        heading.add(title);
+        heading.add(Box.createVerticalStrut(6));
+        heading.add(subtitle);
+        content.add(heading, BorderLayout.NORTH);
+
+        JPanel form = new JPanel(new GridBagLayout());
+        form.setBackground(Color.WHITE);
+        form.setBorder(BorderFactory.createTitledBorder("Masuk ke Sistem"));
+
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        constraints.insets = new Insets(5, 5, 5, 5);
-
-        JLabel title = new JLabel("Gym Membership System");
-        title.setFont(title.getFont().deriveFont(Font.BOLD, 18f));
-        content.add(title, constraints);
-
-        constraints.gridy++;
-        content.add(new JLabel("Login Admin"), constraints);
-
-        constraints.gridwidth = 1;
-        constraints.gridy++;
         constraints.anchor = GridBagConstraints.WEST;
-        content.add(new JLabel("Username"), constraints);
-        constraints.gridx = 1;
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(6, 10, 6, 10);
+        form.add(new JLabel("Username"), constraints);
+
+        constraints.gridx = 1;
         constraints.weightx = 1;
-        content.add(username, constraints);
+        username.setPreferredSize(new Dimension(210, 30));
+        form.add(username, constraints);
 
         constraints.gridx = 0;
         constraints.gridy++;
-        constraints.fill = GridBagConstraints.NONE;
         constraints.weightx = 0;
-        content.add(new JLabel("Password"), constraints);
+        form.add(new JLabel("Password"), constraints);
+
         constraints.gridx = 1;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
-        content.add(password, constraints);
+        password.setPreferredSize(new Dimension(210, 30));
+        form.add(password, constraints);
 
         constraints.gridy++;
-        constraints.fill = GridBagConstraints.NONE;
+        constraints.gridx = 1;
         constraints.anchor = GridBagConstraints.EAST;
-        content.add(loginButton, constraints);
+        constraints.fill = GridBagConstraints.NONE;
+        loginButton.setPreferredSize(new Dimension(120, 32));
+        form.add(loginButton, constraints);
+
+        content.add(form, BorderLayout.CENTER);
         return content;
     }
 
