@@ -3,6 +3,8 @@ package dao;
 import config.ConnectionFactory;
 import config.DatabaseConnection;
 import model.Member;
+import model.PremiumMember;
+import model.RegularMember;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -10,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,18 @@ public class MemberDAO {
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet results = statement.executeQuery()) {
             return mapAll(results);
+        }
+    }
+
+    public Member findById(int id) throws SQLException {
+        String sql = "SELECT " + COLUMNS + " FROM members WHERE id = ?";
+        try (Connection connection = connectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet results = statement.executeQuery()) {
+                List<Member> list = mapAll(results);
+                return list.isEmpty() ? null : list.get(0);
+            }
         }
     }
 
@@ -110,13 +125,18 @@ public class MemberDAO {
     private List<Member> mapAll(ResultSet results) throws SQLException {
         List<Member> members = new ArrayList<>();
         while (results.next()) {
-            members.add(new Member(
-                    results.getInt("id"),
-                    results.getString("name"),
-                    results.getString("phone"),
-                    results.getString("membership_type"),
-                    results.getDate("registration_date").toLocalDate(),
-                    results.getDate("expiry_date").toLocalDate()));
+            int id = results.getInt("id");
+            String name = results.getString("name");
+            String phone = results.getString("phone");
+            String type = results.getString("membership_type");
+            LocalDate regDate = results.getDate("registration_date").toLocalDate();
+            LocalDate expDate = results.getDate("expiry_date").toLocalDate();
+            
+            if ("Premium".equalsIgnoreCase(type)) {
+                members.add(new PremiumMember(id, name, phone, regDate, expDate));
+            } else {
+                members.add(new RegularMember(id, name, phone, regDate, expDate));
+            }
         }
         return members;
     }

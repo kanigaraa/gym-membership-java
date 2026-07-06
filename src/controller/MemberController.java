@@ -2,6 +2,8 @@ package controller;
 
 import dao.MemberDAO;
 import model.Member;
+import model.PremiumMember;
+import model.RegularMember;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -56,6 +58,21 @@ public class MemberController {
         }
     }
 
+    public void extendMembership(Integer id, int months) throws SQLException {
+        requireSelection(id);
+        if (months <= 0) {
+            throw new ValidationException("Durasi perpanjangan harus lebih dari 0.");
+        }
+        Member member = memberDAO.findById(id);
+        if (member == null) {
+            throw new ValidationException("Member yang dipilih tidak ditemukan.");
+        }
+        member.extendMembership(months);
+        if (!memberDAO.update(member)) {
+            throw new ValidationException("Gagal memperbarui membership.");
+        }
+    }
+
     public Member buildMember(Integer id, String name, String phone, String membershipType,
                               String registrationDate, String expiryDate) {
         String cleanName = required(name, "Nama member wajib diisi.");
@@ -76,7 +93,12 @@ public class MemberController {
         if (expires.isBefore(registered)) {
             throw new ValidationException("Tanggal berakhir tidak boleh sebelum tanggal daftar.");
         }
-        return new Member(id, cleanName, cleanPhone, cleanType, registered, expires);
+        
+        if ("Premium".equals(cleanType)) {
+            return new PremiumMember(id, cleanName, cleanPhone, registered, expires);
+        } else {
+            return new RegularMember(id, cleanName, cleanPhone, registered, expires);
+        }
     }
 
     private String required(String value, String message) {
