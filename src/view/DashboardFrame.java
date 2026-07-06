@@ -9,8 +9,10 @@ public class DashboardFrame extends JFrame {
     private final JButton logoutButton = new JButton("Logout");
 
     public DashboardFrame() {
-        setTitle("Dashboard");
-        setContentPane(createContentPanel(memberButton, membershipButton, logoutButton));
+        setTitle("Akali Fit - Dashboard");
+        JPanel content = createContentPanel(memberButton, membershipButton, logoutButton);
+        AkaliFitTheme.apply(content);
+        setContentPane(content);
         setSize(680, 420);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,14 +37,14 @@ public class DashboardFrame extends JFrame {
         JPanel heading = new JPanel();
         heading.setLayout(new BoxLayout(heading, BoxLayout.Y_AXIS));
         heading.setBackground(Color.WHITE);
-        JLabel title = new JLabel("Gym Membership System");
+        JLabel title = new JLabel("AKALI FIT");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel subtitle = new JLabel("Dashboard Admin");
-        subtitle.setForeground(new Color(90, 90, 90));
+        subtitle.setForeground(AkaliFitTheme.MUTED_TEXT);
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel welcome = new JLabel("Selamat datang, Admin");
-        welcome.setForeground(new Color(70, 70, 70));
+        welcome.setForeground(AkaliFitTheme.MUTED_TEXT);
         welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
         heading.add(title);
         heading.add(Box.createVerticalStrut(8));

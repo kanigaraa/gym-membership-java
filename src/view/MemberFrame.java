@@ -41,14 +41,16 @@ public class MemberFrame extends JFrame {
     MemberFrame(MemberController controller) {
         this.controller = controller;
         configureWindow();
-        setContentPane(createContent());
+        JPanel content = createContent();
+        AkaliFitTheme.apply(content);
+        setContentPane(content);
         bindEvents();
         resetForm();
         refreshMembers();
     }
 
     private void configureWindow() {
-        setTitle("Gym Membership - Kelola Member");
+        setTitle("Akali Fit - Data Member");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(980, 620));
         setSize(1100, 680);
@@ -59,12 +61,27 @@ public class MemberFrame extends JFrame {
         JPanel content = new JPanel(new BorderLayout(12, 12));
         content.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
 
-        JLabel title = new JLabel("Manajemen Member Gym");
+        JButton backButton = new JButton("Kembali");
+        JLabel title = new JLabel("Akali Fit - Manajemen Member");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
-        content.add(title, BorderLayout.NORTH);
+        content.add(createHeader(title, backButton), BorderLayout.NORTH);
         content.add(createFormPanel(), BorderLayout.WEST);
         content.add(createTablePanel(), BorderLayout.CENTER);
+
+        backButton.addActionListener(event -> backToDashboard());
         return content;
+    }
+
+    static JPanel createHeader(JLabel title, JButton backButton) {
+        JPanel header = new JPanel(new BorderLayout());
+        header.add(title, BorderLayout.WEST);
+        header.add(backButton, BorderLayout.EAST);
+        return header;
+    }
+
+    private void backToDashboard() {
+        new DashboardFrame().setVisible(true);
+        dispose();
     }
 
     private JPanel createFormPanel() {

@@ -16,8 +16,10 @@ public class LoginFrame extends JFrame {
 
     LoginFrame(AuthController authController) {
         this.authController = authController;
-        setTitle("Gym Membership Management");
-        setContentPane(createContentPanel(tfUsername, pfPassword, btnLogin));
+        setTitle("Akali Fit - Login");
+        JPanel content = createContentPanel(tfUsername, pfPassword, btnLogin);
+        AkaliFitTheme.apply(content);
+        setContentPane(content);
         setSize(460, 340);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -36,12 +38,12 @@ public class LoginFrame extends JFrame {
         heading.setLayout(new BoxLayout(heading, BoxLayout.Y_AXIS));
         heading.setBackground(Color.WHITE);
 
-        JLabel title = new JLabel("Gym Membership System");
+        JLabel title = new JLabel("AKALI FIT");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitle = new JLabel("Login Admin");
-        subtitle.setForeground(new Color(90, 90, 90));
+        subtitle.setForeground(AkaliFitTheme.MUTED_TEXT);
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         heading.add(title);
